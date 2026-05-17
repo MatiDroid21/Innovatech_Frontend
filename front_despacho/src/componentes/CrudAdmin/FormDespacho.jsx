@@ -20,12 +20,12 @@ export const FormDespacho = ({ venta, onClose }) => {
 
     try {
       await axios.put(
-        `http://10.0.2.10:8081/api/v1/ventas/${venta.idVenta}`,
+        `http://10.0.2.10:8080/api/v1/ventas/${venta.idVenta}`,
         jsonDataSales,
         { headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' } }
       );
       await axios.post(
-        "http://10.0.2.10:8082/api/v1/despachos",
+        "http://10.0.2.10:8081/api/v1/despachos",
         jsonData,
         { headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' } }
       );
