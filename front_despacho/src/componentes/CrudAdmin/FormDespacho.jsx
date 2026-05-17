@@ -6,7 +6,6 @@ export const FormDespacho = ({ venta, onClose }) => {
   const { register, handleSubmit } = useForm();
 
   const onSubmit = async (data) => {
-    console.log("onSubmit ejecutado");
     const jsonData = {
       fechaDespacho: data.fechaDespacho,
       patenteCamion: data.patenteCamion,
@@ -17,29 +16,19 @@ export const FormDespacho = ({ venta, onClose }) => {
       valorCompra: venta.valorCompra,
     };
 
-    const jsonDataSales = {
-      despachoGenerado: true,
-    };
-
-    console.log("Datos del formulario:", jsonData);
+    const jsonDataSales = { despachoGenerado: true };
 
     try {
       await axios.put(
-        `http://192.168.30/api/v1/ventas/${venta.idVenta}`,
+        `http://10.0.2.10:8081/api/v1/ventas/${venta.idVenta}`,
         jsonDataSales,
-        {
-          headers:{
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-      }
-        }
+        { headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' } }
       );
-      await axios.post("http://192.168.320/api/v1/despachos", jsonData, {
-        headers:{
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-    }
-      });
+      await axios.post(
+        "http://10.0.2.10:8082/api/v1/despachos",
+        jsonData,
+        { headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' } }
+      );
       Swal.fire({
         title: "Despacho registrado 🛻!",
         text: "El despacho ha sido generado con éxito en la base de datos",
@@ -51,6 +40,7 @@ export const FormDespacho = ({ venta, onClose }) => {
     }
     onClose();
   };
+
   return (
     <>
       <form
@@ -64,7 +54,6 @@ export const FormDespacho = ({ venta, onClose }) => {
           <label className="block font-bold mb-2">Fecha de despacho</label>
           <input
             type="date"
-            placeholder="Ingresa fecha de despacho"
             className="border border-gray-300 rounded-lg block w-full p-1"
             {...register("fechaDespacho", { required: true })}
           />
@@ -79,39 +68,18 @@ export const FormDespacho = ({ venta, onClose }) => {
           />
         </div>
         <div className="mb-5">
-          <label className="block font-bold mb-2">
-            Orden de compra asociado
-          </label>
-          <input
-            type="number"
-            disabled={true}
-            value={venta.idVenta}
-            className="border border-gray-300 rounded-lg block w-full text-slate-400 p-1"
-          />
+          <label className="block font-bold mb-2">Orden de compra asociado</label>
+          <input type="number" disabled value={venta.idVenta} className="border border-gray-300 rounded-lg block w-full text-slate-400 p-1" />
         </div>
         <div className="mb-5">
           <label className="block font-bold mb-2">Dirección de entrega</label>
-          <input
-            type="text"
-            disabled={true}
-            value={venta.direccionCompra}
-            className="border border-gray-300 rounded-lg block w-full text-slate-400 p-1"
-          />
+          <input type="text" disabled value={venta.direccionCompra} className="border border-gray-300 rounded-lg block w-full text-slate-400 p-1" />
         </div>
         <div className="mb-5">
           <label className="block font-bold mb-2">Valor de compra</label>
-          <input
-            type="number"
-            value={venta.valorCompra}
-            className="border border-gray-300 rounded-lg block w-full text-slate-400 p-1"
-            disabled={true}
-          />
+          <input type="number" disabled value={venta.valorCompra} className="border border-gray-300 rounded-lg block w-full text-slate-400 p-1" />
         </div>
-
-        <button
-          className="py-6 px-14 rounded-lg bg-teal-600 text-white font-bold mb-14"
-          type="submit"
-        >
+        <button className="py-6 px-14 rounded-lg bg-teal-600 text-white font-bold mb-14" type="submit">
           Asignar despacho
         </button>
       </form>
