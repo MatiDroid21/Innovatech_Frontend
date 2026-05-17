@@ -7,19 +7,15 @@ export const TableDespachos = () => {
   const [despachos, setDespachos] = useState([]);
 
   const despacho = async () => {
-    await axios
-      .get("http://10.0.2.10:8081/api/v1/despachos", {
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
-      })
-      .then((response) => {
-        console.log(response.data);
-        setDespachos(response.data);
-      });
+    await axios.get("/api/despachos/", {
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
+    }).then((response) => {
+      console.log(response.data);
+      setDespachos(response.data);
+    });
   };
 
-  useEffect(() => {
-    despacho();
-  }, []);
+  useEffect(() => { despacho(); }, []);
 
   const [openModal, setOpenModal] = useState(false);
   const [despachoSeleccionado, setDespachoSeleccionado] = useState(null);
@@ -49,13 +45,13 @@ export const TableDespachos = () => {
               <tbody>
                 {despachos.map((d) => (
                   <tr key={d.idDespacho}>
-                    <td className="pr-10 py-10 items-center">{d.idDespacho}</td>
-                    <td className="pr-10 py-10 items-center">{d.idCompra}</td>
-                    <td className="pr-10 py-10 items-center">{d.direccionCompra}</td>
-                    <td className="pr-10 py-10 items-center">{d.fechaDespacho}</td>
-                    <td className="pr-10 py-10 items-center">{d.patenteCamion}</td>
-                    <td className="pr-10 py-10 items-center">{d.entregado ? "Despacho entregado" : "Despacho pendiente"}</td>
-                    <td className="pr-10 py-10 items-center">{d.intento}</td>
+                    <td className="pr-10 py-10">{d.idDespacho}</td>
+                    <td className="pr-10 py-10">{d.idCompra}</td>
+                    <td className="pr-10 py-10">{d.direccionCompra}</td>
+                    <td className="pr-10 py-10">{d.fechaDespacho}</td>
+                    <td className="pr-10 py-10">{d.patenteCamion}</td>
+                    <td className="pr-10 py-10">{d.entregado ? "Entregado" : "Pendiente"}</td>
+                    <td className="pr-10 py-10">{d.intento}</td>
                     <td>
                       <button
                         onClick={() => handleAbrirModal(d)}

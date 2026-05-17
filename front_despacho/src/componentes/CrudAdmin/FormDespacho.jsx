@@ -20,17 +20,17 @@ export const FormDespacho = ({ venta, onClose }) => {
 
     try {
       await axios.put(
-        `http://10.0.2.10:8080/api/v1/ventas/${venta.idVenta}`,
+        `/api/ventas/${venta.idVenta}`,
         jsonDataSales,
         { headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' } }
       );
       await axios.post(
-        "http://10.0.2.10:8081/api/v1/despachos",
+        "/api/despachos/",
         jsonData,
         { headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' } }
       );
       Swal.fire({
-        title: "Despacho registrado 🛻!",
+        title: "Despacho registrado 🚛!",
         text: "El despacho ha sido generado con éxito en la base de datos",
         icon: "success",
         confirmButtonText: "Aceptar",
@@ -42,47 +42,29 @@ export const FormDespacho = ({ venta, onClose }) => {
   };
 
   return (
-    <>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col justify-center text-center px-24 text-xl"
-      >
-        <div className="mx-auto text-3xl font-bold mb-10 text-teal-600">
-          Ingreso de orden de despacho
-        </div>
-        <div className="mb-5">
-          <label className="block font-bold mb-2">Fecha de despacho</label>
-          <input
-            type="date"
-            className="border border-gray-300 rounded-lg block w-full p-1"
-            {...register("fechaDespacho", { required: true })}
-          />
-        </div>
-        <div className="mb-5">
-          <label className="block font-bold mb-2">Patente de camión</label>
-          <input
-            type="text"
-            placeholder="Elige patente de camión"
-            className="border border-gray-300 rounded-lg block w-full p-1"
-            {...register("patenteCamion", { required: true })}
-          />
-        </div>
-        <div className="mb-5">
-          <label className="block font-bold mb-2">Orden de compra asociado</label>
-          <input type="number" disabled value={venta.idVenta} className="border border-gray-300 rounded-lg block w-full text-slate-400 p-1" />
-        </div>
-        <div className="mb-5">
-          <label className="block font-bold mb-2">Dirección de entrega</label>
-          <input type="text" disabled value={venta.direccionCompra} className="border border-gray-300 rounded-lg block w-full text-slate-400 p-1" />
-        </div>
-        <div className="mb-5">
-          <label className="block font-bold mb-2">Valor de compra</label>
-          <input type="number" disabled value={venta.valorCompra} className="border border-gray-300 rounded-lg block w-full text-slate-400 p-1" />
-        </div>
-        <button className="py-6 px-14 rounded-lg bg-teal-600 text-white font-bold mb-14" type="submit">
-          Asignar despacho
-        </button>
-      </form>
-    </>
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col justify-center text-center px-24 text-xl">
+      <div className="mx-auto text-3xl font-bold mb-10 text-teal-600">Ingreso de orden de despacho</div>
+      <div className="mb-5">
+        <label className="block font-bold mb-2">Fecha de despacho</label>
+        <input type="date" className="border border-gray-300 rounded-lg block w-full p-1" {...register("fechaDespacho", { required: true })} />
+      </div>
+      <div className="mb-5">
+        <label className="block font-bold mb-2">Patente de camión</label>
+        <input type="text" placeholder="Elige patente de camión" className="border border-gray-300 rounded-lg block w-full p-1" {...register("patenteCamion", { required: true })} />
+      </div>
+      <div className="mb-5">
+        <label className="block font-bold mb-2">Orden de compra asociado</label>
+        <input type="number" disabled value={venta.idVenta} className="border border-gray-300 rounded-lg block w-full text-slate-400 p-1" />
+      </div>
+      <div className="mb-5">
+        <label className="block font-bold mb-2">Dirección de entrega</label>
+        <input type="text" disabled value={venta.direccionCompra} className="border border-gray-300 rounded-lg block w-full text-slate-400 p-1" />
+      </div>
+      <div className="mb-5">
+        <label className="block font-bold mb-2">Valor de compra</label>
+        <input type="number" disabled value={venta.valorCompra} className="border border-gray-300 rounded-lg block w-full text-slate-400 p-1" />
+      </div>
+      <button className="py-6 px-14 rounded-lg bg-teal-600 text-white font-bold mb-14" type="submit">Asignar despacho</button>
+    </form>
   );
 };

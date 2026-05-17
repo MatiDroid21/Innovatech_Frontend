@@ -7,20 +7,15 @@ export const TableCompras = () => {
   const [ventas, setVentas] = useState([]);
 
   const compras = async () => {
-    await axios.get("http://10.0.2.10:8080/api/v1/ventas", {
-      headers:{
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      }
+    await axios.get("/api/ventas/", {
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
     }).then((response) => {
       console.log(response.data);
       setVentas(response.data);
     });
   };
 
-  useEffect(() => {
-    compras();
-  }, []);
+  useEffect(() => { compras(); }, []);
 
   const [openModal, setOpenModal] = useState(false);
   const [ventaSeleccionada, setVentaSeleccionada] = useState(null);
@@ -39,9 +34,9 @@ export const TableCompras = () => {
               <thead>
                 <tr className="py-10">
                   <th className="pr-10">Orden de compra</th>
-                  <th className="pr-10">direccion</th>
-                  <th className="pr-10">fecha de compra</th>
-                  <th className="pr-10">valor total</th>
+                  <th className="pr-10">Dirección</th>
+                  <th className="pr-10">Fecha de compra</th>
+                  <th className="pr-10">Valor total</th>
                   <th className="pr-10"></th>
                 </tr>
               </thead>
@@ -50,10 +45,10 @@ export const TableCompras = () => {
                   .filter((venta) => !venta.despachoGenerado)
                   .map((venta) => (
                     <tr key={venta.idVenta}>
-                      <td className="pr-10 py-10 items-center">{venta.idVenta}</td>
-                      <td className="pr-10 py-10 items-center">{venta.direccionCompra}</td>
-                      <td className="pr-10 py-10 items-center">{venta.fechaCompra}</td>
-                      <td className="pr-10 py-10 items-center">${venta.valorCompra}</td>
+                      <td className="pr-10 py-10">{venta.idVenta}</td>
+                      <td className="pr-10 py-10">{venta.direccionCompra}</td>
+                      <td className="pr-10 py-10">{venta.fechaCompra}</td>
+                      <td className="pr-10 py-10">${venta.valorCompra}</td>
                       <td>
                         <button
                           onClick={() => handleAbrirModal(venta)}
