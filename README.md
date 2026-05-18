@@ -5,7 +5,7 @@ Desplegada en una instancia **EC2 pública** en AWS, contenerizada con Docker y 
 
 ---
 
-## 🏗️ Arquitectura
+## Arquitectura
 EC2 Frontend (subred pública — accesible desde Internet)
 └── Contenedor: front-despacho → Puerto 80 (Nginx)
 ↓ comunica con →
@@ -15,7 +15,7 @@ El frontend consume los endpoints del backend a través de la IP interna de la V
 
 ---
 
-## 🐳 Contenedorización
+## Contenedorización
 
 ### Requisitos previos
 - Docker >= 24.x
@@ -33,7 +33,7 @@ cp .env.example .env
 |---|---|
 | `VITE_API_URL` | URL base del backend (ej: `http://<IP-BACKEND>:8080`) |
 
-> ⚠️ Esta variable se embebe en el build. Si cambia la IP del backend, se debe reconstruir la imagen.
+> Esta variable se embebe en el build. Si cambia la IP del backend, se debe reconstruir la imagen.
 
 ### Levantar el contenedor
 
@@ -56,7 +56,7 @@ docker compose down
 
 ---
 
-## 🔄 Pipeline CI/CD — GitHub Actions
+## Pipeline CI/CD — GitHub Actions
 
 El pipeline se activa automáticamente con cada `push` a la rama **`deploy`**.
 
@@ -95,7 +95,7 @@ git push origin deploy
 
 ---
 
-## 📁 Estructura del repositorio
+## Estructura del repositorio
 Innovatech_Frontend/
 ├── .github/
 │ └── workflows/ # Pipelines GitHub Actions
@@ -109,14 +109,14 @@ Innovatech_Frontend/
 
 ---
 
-## 🌐 Acceso
+## Acceso
 
 Una vez desplegado, el frontend es accesible desde:
 http://<IP-PUBLICA-EC2-FRONTEND>
 
 ---
 
-## 👥 Integrantes
+##  Integrantes
 
 - Keiton Chaves
 - Sergio Soto
