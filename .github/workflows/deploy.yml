@@ -32,9 +32,9 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/innovatech-frontend:latest
           build-args: |
-            VITE_API_URL=${{ secrets.VITE_API_URL }}
-            VITE_VENTAS_URL=${{ secrets.VITE_VENTAS_URL }}
-            VITE_DESPACHOS_URL=${{ secrets.VITE_DESPACHOS_URL }}
+            VITE_API_URL=/api/despachos
+            VITE_VENTAS_URL=/api/ventas
+            VITE_DESPACHOS_URL=/api/despachos
 
   # ─────────────────────────────────────────────
   # JOB 2: Deploy en EC2 pública (espera el build)
@@ -57,7 +57,7 @@ jobs:
             git remote set-url origin https://github.com/MatiDroid21/Innovatech_Frontend.git
             git pull origin deploy
 
-            # Crear .env solo con DOCKER_USERNAME (necesario para docker-compose image tag)
+            # .env solo necesita DOCKER_USERNAME para el image tag del compose
             cat > .env <<EOF
             DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}
             EOF
