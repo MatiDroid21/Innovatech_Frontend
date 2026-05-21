@@ -1,11 +1,6 @@
-# docker-compose.yml — Innovatech Frontend
-# Levanta el frontend React/Vite en Nginx (puerto 80)
-# Uso: docker compose up --build
-
 services:
-
-  # ─── FRONTEND ────────────────────────────────────────────────
   frontend:
+    image: ${DOCKER_USERNAME}/innovatech-frontend:latest  # ← esto permite docker compose pull
     build:
       context: ./front_despacho
       dockerfile: Dockerfile
@@ -13,12 +8,9 @@ services:
     restart: unless-stopped
     ports:
       - "80:80"
-    environment:
-      - VITE_API_URL=${VITE_API_URL}
     networks:
       - frontend_net
 
-# ─── REDES ───────────────────────────────────────────────────
 networks:
   frontend_net:
     name: innovatech_frontend_net
