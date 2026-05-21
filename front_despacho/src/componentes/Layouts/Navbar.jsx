@@ -11,7 +11,7 @@ function Navbar() {
             href="#"
             className="block font-bold py-2 px-3 hover:bg-teal-700 rounded"
           >
-            Usuarios
+            Usuarios Conf
           </a>
         </li>
         <li>
@@ -19,7 +19,7 @@ function Navbar() {
             href="#"
             className="block font-bold py-2 px-3 hover:bg-teal-700 rounded"
           >
-            Productos
+            Productos Conf
           </a>
         </li>
         <li>
@@ -27,7 +27,7 @@ function Navbar() {
             href="#"
             className="block font-bold py-2 px-3 hover:bg-teal-700 rounded"
           >
-            Configuración
+            Configuración Conf
           </a>
         </li>
       </ul>
