@@ -1,6 +1,6 @@
 services:
   frontend:
-    image: ${DOCKER_USERNAME}/innovatech-frontend:latest  # ← esto permite docker compose pull
+    image: ${DOCKER_USERNAME}/innovatech-frontend:latest
     build:
       context: ./front_despacho
       dockerfile: Dockerfile
