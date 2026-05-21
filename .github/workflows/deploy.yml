@@ -7,9 +7,6 @@ on:
 
 jobs:
 
-  # ─────────────────────────────────────────────
-  # JOB 1: Build y Push imagen Frontend
-  # ─────────────────────────────────────────────
   build:
     name: Build & Push — Frontend
     runs-on: ubuntu-latest
@@ -36,9 +33,6 @@ jobs:
             VITE_VENTAS_URL=/api/ventas
             VITE_DESPACHOS_URL=/api/despachos
 
-  # ─────────────────────────────────────────────
-  # JOB 2: Deploy en EC2 pública (espera el build)
-  # ─────────────────────────────────────────────
   deploy:
     name: Deploy en EC2 pública
     runs-on: ubuntu-latest
@@ -55,9 +49,9 @@ jobs:
             cd ~/Innovatech_Frontend
 
             git remote set-url origin https://github.com/MatiDroid21/Innovatech_Frontend.git
-            git pull origin deploy
+            git fetch origin deploy
+            git reset --hard origin/deploy
 
-            # .env solo necesita DOCKER_USERNAME para el image tag del compose
             cat > .env <<EOF
             DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}
             EOF
