@@ -1,9 +1,11 @@
+# docker-compose.yml — Innovatech Frontend
+# Levanta el frontend React/Vite en Nginx (puerto 80)
+# NOTA: Las variables VITE_* se embeben en build time dentro del CI/CD,
+#       NO se pasan como environment en runtime.
+
 services:
   frontend:
     image: ${DOCKER_USERNAME}/innovatech-frontend:latest
-    build:
-      context: ./front_despacho
-      dockerfile: Dockerfile
     container_name: innovatech_frontend
     restart: unless-stopped
     ports:

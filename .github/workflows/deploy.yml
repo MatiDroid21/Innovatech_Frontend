@@ -7,6 +7,9 @@ on:
 
 jobs:
 
+  # ─────────────────────────────────────────────
+  # JOB 1: Build y Push imagen Frontend
+  # ─────────────────────────────────────────────
   build:
     name: Build & Push — Frontend
     runs-on: ubuntu-latest
@@ -30,16 +33,18 @@ jobs:
           tags: ${{ secrets.DOCKER_USERNAME }}/innovatech-frontend:latest
           build-args: |
             VITE_API_URL=${{ secrets.VITE_API_URL }}
+            VITE_VENTAS_URL=${{ secrets.VITE_VENTAS_URL }}
+            VITE_DESPACHOS_URL=${{ secrets.VITE_DESPACHOS_URL }}
 
+  # ─────────────────────────────────────────────
+  # JOB 2: Deploy en EC2 pública (espera el build)
+  # ─────────────────────────────────────────────
   deploy:
     name: Deploy en EC2 pública
     runs-on: ubuntu-latest
     needs: build
 
     steps:
-      - name: Checkout código
-        uses: actions/checkout@v4
-
       - name: Deploy via SSH a EC2
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -50,11 +55,10 @@ jobs:
             cd ~/Innovatech_Frontend
 
             git remote set-url origin https://github.com/MatiDroid21/Innovatech_Frontend.git
-
             git pull origin deploy
 
+            # Crear .env solo con DOCKER_USERNAME (necesario para docker-compose image tag)
             cat > .env <<EOF
-            VITE_API_URL=${{ secrets.VITE_API_URL }}
             DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}
             EOF
 
