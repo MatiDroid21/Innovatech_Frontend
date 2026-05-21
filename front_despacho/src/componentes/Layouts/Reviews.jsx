@@ -23,7 +23,7 @@ function Reviews() {
           />
           <img
             className="col-span-2 max-h-12 w-full object-contain sm:col-start-2 lg:col-span-1 mx-auto"
-            src="https://seeklogo.com/images/L/logitech-gaming-logo-B76FC713B0-seeklogo.com.png"
+            src="https://e7.pngegg.com/pngimages/507/944/png-clipart-laptop-computer-cases-housings-micro-star-international-msi-decal-laptop-electronics-label.png"
             alt="SavvyCal"
             width="158"
             height="48"
