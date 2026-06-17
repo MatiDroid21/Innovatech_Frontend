@@ -64,31 +64,37 @@ La aplicación quedará disponible en `http://localhost:80`.
 El pipeline se activa automáticamente con cada push a la rama `deploy`.
 
 **Job 1 — Build & Push:**
-1. Construye la imagen Docker del frontend
-2. Inyecta `VITE_API_URL` como build-arg
-3. Sube la imagen a Docker Hub como `usuario/innovatech-frontend:latest`
+1. Configura las credenciales AWS en el runner.
+2. Se autentica en Amazon ECR.
+3. Construye la imagen Docker del frontend inyectando `VITE_API_URL` como build-arg.
+4. Publica la imagen en Amazon ECR.
 
-**Job 2 — Deploy (depende del Job 1):**
-1. Se conecta por SSH a la EC2
-2. Hace `git pull` y actualiza el `.env`
-3. Ejecuta `docker compose up -d` con la nueva imagen
+**Job 2 — Deploy en EKS (depende del Job 1):**
+1. Configura las credenciales AWS en el runner.
+2. Actualiza el contexto de `kubectl` apuntando al clúster EKS.
+3. Ejecuta `rollout restart` en el deployment del frontend.
+4. Verifica el estado del despliegue con `rollout status`.
 
 **Secrets requeridos en GitHub:**
 
 | Secret | Descripción |
 |---|---|
-| `DOCKER_USERNAME` | Usuario Docker Hub |
-| `DOCKER_PASSWORD` | Token Docker Hub |
-| `EC2_HOST` | IP pública EC2 |
-| `EC2_USER` | Usuario SSH (`ec2-user`) |
-| `EC2_SSH_KEY` | Contenido del archivo `.pem` |
-| `VITE_API_URL` | URL del backend |
+| `AWS_ACCESS_KEY_ID` | Credencial de acceso AWS |
+| `AWS_SECRET_ACCESS_KEY` | Clave secreta AWS |
+| `AWS_SESSION_TOKEN` | Token de sesión temporal AWS Academy |
+| `AWS_REGION` | Región del clúster (us-east-1) |
+| `ECR_REGISTRY` | URL del registro de imágenes ECR |
+| `EKS_CLUSTER_NAME` | Nombre del clúster EKS destino |
+| `VITE_API_URL` | URL del backend para el build de React |
 
 ---
 
 ## Despliegue en EKS
 
-El frontend corre en Amazon EKS como un `Deployment` con 2 réplicas.
+El frontend corre en Amazon EKS como un `Deployment` con 1 réplica activa,
+escalando hasta 4 mediante **Horizontal Pod Autoscaler (HPA)** según demanda de CPU
+(umbral 50%).
+
 El acceso público se realiza a través de un **Network Load Balancer (NLB)**
 creado automáticamente por Kubernetes al declarar `type: LoadBalancer`
 en el `frontend-service`.
@@ -99,7 +105,10 @@ kubectl get services
 
 # Ver pods en ejecución
 kubectl get pods
+
+# Ver HPA
+kubectl get hpa
 ```
 
-URL pública del balanceador:
-acafd3cfd8ad84468b8295effd5e5caf-2ca44e4ca21e036b.elb.us-east-1.amazonaws.com
+> Considerar esto: La URL del NLB cambia cada vez que se recrea el servicio en AWS Academy.
+> Actualizar `VITE_API_URL` y los secrets de GitHub Actions cuando la sesión renueve credenciales.
