@@ -112,3 +112,71 @@ kubectl get hpa
 
 > Considerar esto: La URL del NLB cambia cada vez que se recrea el servicio en AWS Academy.
 > Actualizar `VITE_API_URL` y los secrets de GitHub Actions cuando la sesión renueve credenciales.
+
+
+---
+
+
+## Arquitectura general
+Internet
+│
+▼
+[Network Load Balancer - NLB]
+│
+▼
+[frontend-service - LoadBalancer]
+│
+▼
+[Pod Frontend - React/Nginx]
+│
+├──► ventas-service (ClusterIP) ──► [Pod Ventas - Spring Boot]
+│ │
+└──► despachos-service (ClusterIP) ──► [Pod Despachos - Spring Boot]
+│
+[mysql-service]
+│
+[Pod MySQL 8]
+
+text
+
+El frontend es el único componente expuesto públicamente vía NLB.
+Los microservicios backend y MySQL son internos al clúster (ClusterIP),
+accesibles solo mediante el DNS interno de Kubernetes.
+
+---
+
+## Problemas encontrados y soluciones
+
+### Error 504 Gateway Timeout en Nginx
+**Causa:** El archivo `nginx.conf` tenía IPs hardcodeadas (`10.0.2.10`)
+correspondientes al entorno local de desarrollo, inválidas dentro del clúster EKS.
+
+**Solución:** Se reemplazaron las IPs estáticas por los nombres de servicio
+internos de Kubernetes (`ventas-service` y `despachos-service`), que son
+resueltos automáticamente por el DNS interno del clúster.
+
+```nginx
+# Antes (incorrecto en EKS)
+proxy_pass http://10.0.2.10:8080;
+
+# Después (correcto)
+proxy_pass http://ventas-service;
+proxy_pass http://despachos-service;
+```
+
+---
+
+## Justificación del umbral HPA (50% CPU)
+
+Se eligió el **50% de uso de CPU** como umbral de escalado porque representa
+un punto de equilibrio entre rendimiento y costo:
+
+- Permite absorber picos de carga antes de que afecten la experiencia del usuario.
+- Evita escalar prematuramente ante uso normal.
+- Con instancias `t3.medium` (2 vCPU), el 50% equivale a **1 vCPU disponible
+  como margen** antes de que Kubernetes agregue una nueva réplica.
+
+Configuración aplicada:
+- Mínimo: 1 réplica
+- Máximo: 4 réplicas
+- Target CPU: 50%
