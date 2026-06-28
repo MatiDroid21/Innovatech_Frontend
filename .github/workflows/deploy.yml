@@ -30,9 +30,9 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./front_despacho
-          dockerfile: ./front_despacho/Dockerfile
+          file: ./front_despacho/Dockerfile
           push: true
-          tags: ${{ secrets.ECR_REGISTRY }}/inovatech-frontend:latest
+          tags: ${{ steps.login-ecr.outputs.registry }}/inovatech-frontend:latest
           build-args: |
             VITE_API_URL=${{ secrets.VITE_API_URL }}
 
