@@ -2,7 +2,7 @@
 
 Aplicación web para la gestión de despachos de Innovatech Chile.
 Desarrollada con **React + Vite + TailwindCSS**, contenerizada con Docker
-y desplegada en un clúster **Amazon EKS** con balanceo de carga automático.
+y desplegada en un clúster **Amazon EKS** con balanceo de carga automático..
 
 ---
 
