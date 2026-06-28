@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: 105462331346.dkr.ecr.us-east-1.amazonaws.com/inovatech-frontend:latest
+          image: 784985602395.dkr.ecr.us-east-1.amazonaws.com/inovatech-frontend:latest
           ports:
             - containerPort: 80
           resources:
