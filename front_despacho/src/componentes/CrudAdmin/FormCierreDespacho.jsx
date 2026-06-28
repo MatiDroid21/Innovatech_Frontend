@@ -13,7 +13,7 @@ export const FormCierreDespacho = ({ despacho, onClose }) => {
 
     try {
       await axios.put(
-        `/api/despachos/${despacho.idDespacho}`,  // ← URL relativa, nginx hace el proxy
+        `/api/v1/despachos/${despacho.idDespacho}`,
         jsonData,
         {
           headers: {
@@ -22,6 +22,7 @@ export const FormCierreDespacho = ({ despacho, onClose }) => {
           },
         }
       );
+
       Swal.fire({
         title: "Despacho modificado 🛻!",
         text: "El despacho ha sido modificado exitosamente",
@@ -31,6 +32,7 @@ export const FormCierreDespacho = ({ despacho, onClose }) => {
     } catch (error) {
       console.error("Error en la solicitud:", error);
     }
+
     onClose();
   };
 

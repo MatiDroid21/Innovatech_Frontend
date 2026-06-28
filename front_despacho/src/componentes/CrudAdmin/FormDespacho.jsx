@@ -20,15 +20,17 @@ export const FormDespacho = ({ venta, onClose }) => {
 
     try {
       await axios.put(
-        `/api/ventas/${venta.idVenta}`,
+        `/api/v1/ventas/${venta.idVenta}`,
         jsonDataSales,
         { headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' } }
       );
+
       await axios.post(
-        "/api/despachos/",
+        "/api/v1/despachos/",
         jsonData,
         { headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' } }
       );
+
       Swal.fire({
         title: "Despacho registrado 🚛!",
         text: "El despacho ha sido generado con éxito en la base de datos",
@@ -38,6 +40,7 @@ export const FormDespacho = ({ venta, onClose }) => {
     } catch (error) {
       console.error("Error en la solicitud:", error);
     }
+
     onClose();
   };
 
